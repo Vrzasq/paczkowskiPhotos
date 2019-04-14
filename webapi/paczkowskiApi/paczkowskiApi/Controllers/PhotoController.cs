@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Commons;
+using DbContract.Entities;
+using DbContract.RepositoryContract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using paczkowskiApi.Models;
 
 namespace paczkowskiApi.Controllers
 {
@@ -10,36 +15,51 @@ namespace paczkowskiApi.Controllers
     [ApiController]
     public class PhotoController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        private readonly IRepository _repository;
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public PhotoController(IRepository repository)
         {
-            return "value";
+            _repository = repository;
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<bool> AddPhoto(AddPhotoModel photoModel)
         {
+            try
+            {
+                Photo photo = GetPhoto(photoModel);
+                _repository.AddPhoto(photo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<IEnumerable<GetPhotosResult>> GetUserPhotos()
         {
+            var user = HttpContext.Items["user"] as User;
+            var result = _repository.GetUserPhotos(user);
+            return new JsonResult(result.Select(x => new GetPhotosResult(x)));
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        private Photo GetPhoto(AddPhotoModel model)
         {
+            User user = HttpContext.Items["user"] as User;
+            return new Photo
+            {
+                User = user,
+                Category = model.Category,
+                DisplayName = model.DisplayName,
+                FileName = model.FileName,
+                PhotoNum = DateTime.Now.Ticks.ToString(),
+                Image = Convert.FromBase64String(model.Base64Image)
+            };
         }
     }
 }

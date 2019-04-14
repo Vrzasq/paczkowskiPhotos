@@ -9,6 +9,7 @@ namespace DbContract.Entities
     {
         [Key]
         public int Id { get; set; }
+        public string PhotoNum { get; set; }
         public string DisplayName { get; set; }
         public string FileName { get; set; }
         public string Category { get; set; }

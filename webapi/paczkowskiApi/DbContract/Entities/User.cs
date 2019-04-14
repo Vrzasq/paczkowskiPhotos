@@ -18,6 +18,6 @@ namespace DbContract.Entities
         public string Password { get; set; }
         public string Name { get; set; }
 
-        public IEnumerable<Photo> Photos;
+        public List<Photo> Photos { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Text;
 using Commons;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace paczkowskiApi.security
 {
@@ -11,7 +12,6 @@ namespace paczkowskiApi.security
         {
             string json = tokenBlob.ToJson();
             string base64 = ConverToBase64(json);
-
             return base64;
         }
 

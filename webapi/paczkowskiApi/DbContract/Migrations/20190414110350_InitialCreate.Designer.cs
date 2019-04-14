@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContract.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20190413211806_InitialCreate")]
+    [Migration("20190414110350_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -54,9 +54,15 @@ namespace DbContract.Migrations
 
                     b.Property<byte[]>("Image");
 
+                    b.Property<string>("PhotoNum");
+
                     b.Property<int?>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PhotoNum")
+                        .IsUnique()
+                        .HasFilter("[PhotoNum] IS NOT NULL");
 
                     b.HasIndex("UserId");
 

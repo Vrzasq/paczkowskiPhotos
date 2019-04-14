@@ -19,8 +19,10 @@ namespace DbContract.Repository
 
         public string AddPhoto(Photo photo)
         {
-            dbContext.Add(photo);
+            var user = dbContext.Users.Include(p => p.Photos).Single(u => u.Id == photo.User.Id);
+            user.Photos.Add(photo);
             dbContext.SaveChanges();
+
             return "ok";
         }
 
@@ -54,9 +56,18 @@ namespace DbContract.Repository
             return string.Empty;
         }
 
-        public void AddLoggedUser(LoggedUser user)
+        public void AddLoggedUser(LoggedUser loggedUser)
         {
-            dbContext.Add(user);
+            var user = dbContext.LoggedUsers.Where(users => users.Email == loggedUser.Email.Sanitize()).FirstOrDefault();
+
+            if (user != null)
+            {
+                user.Token = loggedUser.Token;
+                dbContext.Update(user);
+            }
+            else
+                dbContext.Add(loggedUser);
+
             dbContext.SaveChanges();
         }
 
@@ -76,6 +87,12 @@ namespace DbContract.Repository
             if (user != null)
                 return user.Token;
             return string.Empty;
+        }
+
+        public IEnumerable<Photo> GetUserPhotos(User user)
+        {
+            var result = dbContext.Photos.Where(p => p.User.Id == user.Id);
+            return result;
         }
     }
 }

@@ -28,21 +28,30 @@ namespace paczkowskiApi.Controllers
 
             if (userHash == dbHash)
             {
-                BurnOldToken(loginModel.Email);
-                AutheticateUser(loginModel.Email);
+                Authenticate(loginModel.Email);
                 loginResult.Success = true;
             }
 
             return loginResult;
         }
 
-        private void AutheticateUser(string email)
+        private void Authenticate(string email)
         {
             var cookies = Response.Cookies;
             var authTokenBlob = new AuthTokenBlob(email, TokenProvider.NewAuthToken);
             PutAuthUserToDb(authTokenBlob);
             string encryptedBlob = TokenEncryption.Encrypt(authTokenBlob);
             cookies.Append(CookieName.AuthToken, encryptedBlob, new CookieOptions { HttpOnly = true, Path = "/" });
+        }
+
+        [HttpPost]
+        public ActionResult<bool> Logout()
+        {
+            var cookies = Request.Cookies;
+            AuthTokenBlob authTokenBlob = TokenEncryption.Decrypt(cookies[CookieName.AuthToken]);
+            BurnOldToken(authTokenBlob.Email);
+
+            return true;
         }
 
         private void BurnOldToken(string email) =>

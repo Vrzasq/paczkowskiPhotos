@@ -15,5 +15,6 @@ namespace DbContract.RepositoryContract
         void RemoveLoggedUser(string email);
         void AddLoggedUser(LoggedUser user);
         string GetActiveToken(string email);
+        IEnumerable<Photo> GetUserPhotos(User user);
     }
 }

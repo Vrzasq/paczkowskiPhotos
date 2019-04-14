@@ -1,7 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Commons;
+using DbContract.Entities;
 using DbContract.Repository;
 using DbContract.RepositoryContract;
 using Microsoft.AspNetCore.Authentication;
@@ -29,10 +31,21 @@ namespace paczkowskiApi.security
             {
                 var identity = new ClaimsIdentity(nameof(AuthCookieHanlder));
                 var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name);
+                User user = GetUser(tokenBlob.Email);
+                Context.Items.Add("user", user);
                 result = Task.FromResult(AuthenticateResult.Success(ticket));
             }
 
             return result;
+        }
+
+        private User GetUser(string email)
+        {
+            using (IRepository repo = new DbRepository())
+            {
+                User user = repo.GetUserByEmail(email);
+                return user;
+            }
         }
 
         private bool IsAuthorized(AuthTokenBlob tokenBlob)

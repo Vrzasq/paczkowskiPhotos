@@ -22,6 +22,10 @@ namespace DbContract.WebApiDbContext
             modelBuilder.Entity<LoggedUser>()
                 .HasIndex(i => i.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<Photo>()
+                .HasIndex(i => i.PhotoNum)
+                .IsUnique();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

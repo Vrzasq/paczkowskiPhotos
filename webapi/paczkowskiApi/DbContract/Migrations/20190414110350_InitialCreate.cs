@@ -43,6 +43,7 @@ namespace DbContract.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PhotoNum = table.Column<string>(nullable: true),
                     DisplayName = table.Column<string>(nullable: true),
                     FileName = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
@@ -66,6 +67,13 @@ namespace DbContract.Migrations
                 column: "Email",
                 unique: true,
                 filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_PhotoNum",
+                table: "Photos",
+                column: "PhotoNum",
+                unique: true,
+                filter: "[PhotoNum] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_UserId",
