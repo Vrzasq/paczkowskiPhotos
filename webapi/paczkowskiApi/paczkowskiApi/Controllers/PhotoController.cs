@@ -29,7 +29,7 @@ namespace paczkowskiApi.Controllers
         {
             try
             {
-                Photo photo = GetPhoto(photoModel);
+                Photo photo = GetPhotoEntity(photoModel);
                 _repository.AddPhoto(photo);
                 return true;
             }
@@ -48,7 +48,45 @@ namespace paczkowskiApi.Controllers
             return new JsonResult(result.Select(x => new GetPhotosResult(x)));
         }
 
-        private Photo GetPhoto(AddPhotoModel model)
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<bool> EditPhoto(EditPhotoModel photoModel)
+        {
+            try
+            {
+                var photo = new Photo
+                {
+                    PhotoNum = photoModel.PhotoNum,
+                    Category = photoModel.Category,
+                    DisplayName = photoModel.DisplayName
+                };
+
+                _repository.EditPhoto(photo);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<bool> DeletePhoto(DeletePhotoModel photoModel)
+        {
+            try
+            {
+                _repository.DeletePhoto(new Photo { PhotoNum = photoModel.PhotoNum });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        private Photo GetPhotoEntity(AddPhotoModel model)
         {
             User user = HttpContext.Items["user"] as User;
             return new Photo

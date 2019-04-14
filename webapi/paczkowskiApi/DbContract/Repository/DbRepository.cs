@@ -73,19 +73,26 @@ namespace DbContract.Repository
 
         public void RemoveLoggedUser(string email)
         {
-            var user = dbContext.LoggedUsers.Where(users => users.Email == email.Sanitize()).FirstOrDefault();
-            if (user != null)
+            if (email != null)
             {
-                dbContext.Remove(user);
-                dbContext.SaveChanges();
+                var user = dbContext.LoggedUsers.Where(users => users.Email == email.Sanitize()).FirstOrDefault();
+                if (user != null)
+                {
+                    dbContext.Remove(user);
+                    dbContext.SaveChanges();
+                }
             }
         }
 
         public string GetActiveToken(string email)
         {
-            var user = dbContext.LoggedUsers.Where(users => users.Email == email.Sanitize()).FirstOrDefault();
-            if (user != null)
-                return user.Token;
+            if (email != null)
+            {
+                var user = dbContext.LoggedUsers.Where(users => users.Email == email.Sanitize()).FirstOrDefault();
+                if (user != null)
+                    return user.Token;
+            }
+
             return string.Empty;
         }
 
@@ -93,6 +100,23 @@ namespace DbContract.Repository
         {
             var result = dbContext.Photos.Where(p => p.User.Id == user.Id);
             return result;
+        }
+
+        public void EditPhoto(Photo photo)
+        {
+            var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum);
+            dbPhoto.Category = photo.Category;
+            dbPhoto.DisplayName = photo.DisplayName;
+
+            dbContext.Update(dbPhoto);
+            dbContext.SaveChanges();
+        }
+
+        public void DeletePhoto(Photo photo)
+        {
+            var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum);
+            dbContext.Remove(dbPhoto);
+            dbContext.SaveChanges();
         }
     }
 }

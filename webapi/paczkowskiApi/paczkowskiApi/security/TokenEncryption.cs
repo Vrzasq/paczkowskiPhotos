@@ -17,9 +17,14 @@ namespace paczkowskiApi.security
 
         public static AuthTokenBlob Decrypt(string encryptedBlob)
         {
-            byte[] bytes = Convert.FromBase64String(encryptedBlob);
-            string json = ConvertFromBase64(bytes);
-            AuthTokenBlob tokenBlob = JsonConvert.DeserializeObject<AuthTokenBlob>(json);
+            AuthTokenBlob tokenBlob = new AuthTokenBlob();
+
+            if (encryptedBlob != null)
+            {
+                byte[] bytes = Convert.FromBase64String(encryptedBlob);
+                string json = ConvertFromBase64(bytes);
+                tokenBlob = JsonConvert.DeserializeObject<AuthTokenBlob>(json);
+            }
 
             return tokenBlob;
         }
