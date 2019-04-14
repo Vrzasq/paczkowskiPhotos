@@ -104,7 +104,7 @@ namespace DbContract.Repository
 
         public void EditPhoto(Photo photo)
         {
-            var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum);
+            var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum && p.User.Id == photo.User.Id);
             dbPhoto.Category = photo.Category;
             dbPhoto.DisplayName = photo.DisplayName;
 
@@ -114,7 +114,7 @@ namespace DbContract.Repository
 
         public void DeletePhoto(Photo photo)
         {
-            var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum);
+            var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum && p.User.Id == photo.User.Id);
             dbContext.Remove(dbPhoto);
             dbContext.SaveChanges();
         }

@@ -17,6 +17,10 @@ namespace paczkowskiApi.Controllers
     {
         private readonly IRepository _repository;
 
+        private User LoggedUser =>
+            HttpContext.Items["user"] as User;
+
+
         public PhotoController(IRepository repository)
         {
             _repository = repository;
@@ -43,7 +47,7 @@ namespace paczkowskiApi.Controllers
         [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
         public ActionResult<IEnumerable<GetPhotosResult>> GetUserPhotos()
         {
-            var user = HttpContext.Items["user"] as User;
+            var user = LoggedUser;
             var result = _repository.GetUserPhotos(user);
             return new JsonResult(result.Select(x => new GetPhotosResult(x)));
         }
@@ -54,11 +58,13 @@ namespace paczkowskiApi.Controllers
         {
             try
             {
+                var user = LoggedUser;
                 var photo = new Photo
                 {
                     PhotoNum = photoModel.PhotoNum,
                     Category = photoModel.Category,
-                    DisplayName = photoModel.DisplayName
+                    DisplayName = photoModel.DisplayName,
+                    User = user
                 };
 
                 _repository.EditPhoto(photo);
@@ -77,7 +83,8 @@ namespace paczkowskiApi.Controllers
         {
             try
             {
-                _repository.DeletePhoto(new Photo { PhotoNum = photoModel.PhotoNum });
+                var user = LoggedUser;
+                _repository.DeletePhoto(new Photo { PhotoNum = photoModel.PhotoNum, User = user });
                 return true;
             }
             catch (Exception ex)
@@ -88,7 +95,7 @@ namespace paczkowskiApi.Controllers
 
         private Photo GetPhotoEntity(AddPhotoModel model)
         {
-            User user = HttpContext.Items["user"] as User;
+            User user = LoggedUser;
             return new Photo
             {
                 User = user,
@@ -99,5 +106,7 @@ namespace paczkowskiApi.Controllers
                 Image = Convert.FromBase64String(model.Base64Image)
             };
         }
+
+
     }
 }
