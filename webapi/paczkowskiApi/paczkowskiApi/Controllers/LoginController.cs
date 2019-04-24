@@ -20,7 +20,7 @@ namespace paczkowskiApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<LoginResult> Login(LoginModel loginModel)
+        public ActionResult<LoginResult> SignIn(LoginModel loginModel)
         {
             var loginResult = new LoginResult();
             string userHash = CryptoPassword.GetPasswordHash(loginModel.Password);

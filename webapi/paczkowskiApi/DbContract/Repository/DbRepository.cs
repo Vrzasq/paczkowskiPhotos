@@ -30,13 +30,18 @@ namespace DbContract.Repository
         {
             try
             {
+                var existingUser = dbContext.Users.Where(x => x.Email == user.Email).FirstOrDefault();
+
+                if (existingUser != null)
+                    throw new Exception($"User [{user.Email}] already exists");
+
                 dbContext.Add(user);
                 dbContext.SaveChanges();
                 return "ok";
             }
             catch (Exception ex)
             {
-                return "not ok";
+                return ex.Message;
             }
         }
 
@@ -115,6 +120,36 @@ namespace DbContract.Repository
         public void DeletePhoto(Photo photo)
         {
             var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum && p.User.Id == photo.User.Id);
+            dbContext.Remove(dbPhoto);
+            dbContext.SaveChanges();
+        }
+
+        public IEnumerable<Category> GetUserCategories(User user) =>
+            dbContext.Categories.Where(x => x.User.Id == user.Id);
+
+        public string AddCategory(Category category)
+        {
+            try
+            {
+                var user = dbContext.Users.Include(p => p.Photos).Single(u => u.Id == category.User.Id);
+                var existingCategory = user.Categories.FirstOrDefault(x => x.Name == category.Name);
+
+                if (existingCategory != null)
+                    throw new Exception($"Category [{category.Name}] alreadye exists");
+
+                user.Categories.Add(category);
+                dbContext.SaveChanges();
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            var dbPhoto = dbContext.Categories.Single(c => c.Name == category.Name && c.User.Id == c.User.Id);
             dbContext.Remove(dbPhoto);
             dbContext.SaveChanges();
         }

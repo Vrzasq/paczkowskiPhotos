@@ -45,11 +45,12 @@ namespace paczkowskiApi.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
-        public ActionResult<IEnumerable<GetPhotosResult>> GetUserPhotos()
+        public ActionResult<IEnumerable<GetPhotosResult>> GetPhotos()
         {
-            var user = LoggedUser;
-            var result = _repository.GetUserPhotos(user);
-            return new JsonResult(result.Select(x => new GetPhotosResult(x)));
+            var photos = _repository.GetUserPhotos(LoggedUser);
+            var result = photos.Select(x => new GetPhotosResult(x)).ToArray();
+
+            return result;
         }
 
         [HttpPut]
@@ -58,13 +59,12 @@ namespace paczkowskiApi.Controllers
         {
             try
             {
-                var user = LoggedUser;
                 var photo = new Photo
                 {
                     PhotoNum = photoModel.PhotoNum,
                     Category = photoModel.Category,
                     DisplayName = photoModel.DisplayName,
-                    User = user
+                    User = LoggedUser
                 };
 
                 _repository.EditPhoto(photo);
@@ -83,8 +83,7 @@ namespace paczkowskiApi.Controllers
         {
             try
             {
-                var user = LoggedUser;
-                _repository.DeletePhoto(new Photo { PhotoNum = photoModel.PhotoNum, User = user });
+                _repository.DeletePhoto(new Photo { PhotoNum = photoModel.PhotoNum, User = LoggedUser });
                 return true;
             }
             catch (Exception ex)
@@ -93,12 +92,49 @@ namespace paczkowskiApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<bool> AddCategory(CategoryModel model)
+        {
+            string result = _repository.AddCategory(new Category { Name = model.Name, User = LoggedUser });
+
+            if (result != "ok")
+                return false;
+
+            return true;
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<IEnumerable<CategoryModel>> GetCategories()
+        {
+            var categories = _repository.GetUserCategories(LoggedUser);
+            var result = categories.Select(x => new CategoryModel { Name = x.Name }).ToArray();
+
+            return result;
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<bool> GetCategories(CategoryModel model)
+        {
+            try
+            {
+                var category = new Category { Name = model.Name, User = LoggedUser };
+                _repository.DeleteCategory(category);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private Photo GetPhotoEntity(AddPhotoModel model)
         {
-            User user = LoggedUser;
             return new Photo
             {
-                User = user,
+                User = LoggedUser,
                 Category = model.Category,
                 DisplayName = model.DisplayName,
                 FileName = model.FileName,

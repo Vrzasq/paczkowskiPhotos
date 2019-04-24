@@ -17,11 +17,13 @@ namespace paczkowskiApi.Controllers
     public class RegisterController : ControllerBase
     {
         IRepository _repository;
+
         public RegisterController(IRepository repository)
         {
             _repository = repository;
         }
-        // GET api/values
+
+
         [HttpPost]
         public ActionResult<string> NewUser(RegisterUserModel registerModel)
         {
@@ -42,19 +44,6 @@ namespace paczkowskiApi.Controllers
         {
             var result = _repository.GetAllUsers();
             return new JsonResult(result);
-        }
-
-        [HttpGet]
-        public ActionResult<User> GetUser(string email)
-        {
-            var result = _repository.GetUserByEmail(email);
-            return result;
-        }
-
-        [HttpPost]
-        public ActionResult AddPhoto(string email)
-        {
-            return new EmptyResult();
         }
     }
 }

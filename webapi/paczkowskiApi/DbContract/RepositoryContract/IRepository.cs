@@ -18,5 +18,8 @@ namespace DbContract.RepositoryContract
         IEnumerable<Photo> GetUserPhotos(User user);
         void EditPhoto(Photo photo);
         void DeletePhoto(Photo photo);
+        IEnumerable<Category> GetUserCategories(User user);
+        string AddCategory(Category category);
+        void DeleteCategory(Category category);
     }
 }

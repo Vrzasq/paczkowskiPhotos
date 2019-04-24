@@ -26,6 +26,10 @@ namespace DbContract.WebApiDbContext
             modelBuilder.Entity<Photo>()
                 .HasIndex(i => i.PhotoNum)
                 .IsUnique();
+
+            modelBuilder.Entity<Category>()
+                .HasIndex(i => i.Name)
+                .IsUnique();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -38,5 +42,6 @@ namespace DbContract.WebApiDbContext
         public DbSet<LoggedUser> LoggedUsers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }
