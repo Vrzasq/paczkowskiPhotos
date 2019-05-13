@@ -7,36 +7,68 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="styles/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"
         integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="lib/jqeury.visible.min.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <title>Organize Your Photos</title>
 </head>
 
-<body class="w3-container">
-    <h1>Hello Paczkowski Photos</h1>
-    <button id="showModal">ClickMe</button>
+<body>
+    <div id="vueApp">
+        <div class="index-header">
+            <h1>{{ indexHeader }}</h1>
+        </div>
+        <div class="content">
+            <div class="w3-bar control-bar">
+                <div
+                v-for="bar in controlBar" 
+                v-bind:key="bar.name"
+                v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }]"
+                v-on:click="currentBar = bar">{{ bar.name }}</div>
+            </div>
+            <div class="w3-container site-content">
+                some random text
+                <component
+                    v-bind:is="currentBar.component"
+                ></component>
+            </div>
+        </div>
 
-    <div id="modalDialog" title="Hello Moto">This is dialog Text</div>
+        <button v-on:click="test">click</button>
+    </div>
 
     <script>
-        $('#modalDialog').dialog({
-            autoOpen: false,
-            buttons: [
-                {
-                    text: "OK",
-                    icon: "ui-icon-heart",
-                    click: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            ]
+        var vueData = {
+            indexHeader: 'Paczkowski Photos',
+            controlBar: controlBar,
+            currentBar: controlBar[0]
+        };
+
+        var vueMethods = {
+            test: function () {
+                alert("hello");
+            }
+        };
+
+        var vueApp = new Vue({
+            el: "#vueApp",
+            data: vueData,
+            methods: vueMethods
         });
 
-        $('#showModal').click(function () {
-            $('#modalDialog').dialog('open');
+        $(window).scroll(function () {
+            let isvisible = $('.index-header').visible(true);
+            if (!isvisible) {
+                $('.control-bar').css('position', 'fixed');
+            } else {
+                $('.control-bar').css('position', 'absolute');
+            }
         });
     </script>
 </body>
