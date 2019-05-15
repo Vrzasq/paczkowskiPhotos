@@ -114,9 +114,9 @@ namespace paczkowskiApi.Controllers
             return result;
         }
 
-        [HttpGet]
+        [HttpDelete]
         [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
-        public ActionResult<bool> GetCategories(CategoryModel model)
+        public ActionResult<bool> DeleteCategory(CategoryModel model)
         {
             try
             {

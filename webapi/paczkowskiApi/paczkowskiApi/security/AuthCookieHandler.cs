@@ -12,9 +12,9 @@ using Microsoft.Extensions.Options;
 
 namespace paczkowskiApi.security
 {
-    public class AuthCookieHanlder : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class AuthCookieHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public AuthCookieHanlder(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        public AuthCookieHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
 
         }
@@ -29,7 +29,7 @@ namespace paczkowskiApi.security
 
             if (IsAuthorized(tokenBlob))
             {
-                var identity = new ClaimsIdentity(nameof(AuthCookieHanlder));
+                var identity = new ClaimsIdentity(nameof(AuthCookieHandler));
                 var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name);
                 User user = GetUser(tokenBlob.Email);
                 Context.Items.Add("user", user);
