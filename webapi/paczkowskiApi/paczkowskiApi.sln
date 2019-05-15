@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "paczkowskiApi", "paczkowski
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "Commons\Commons.csproj", "{3AEAE2DE-1DCD-4A2B-8589-20BEE89F26A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContract", "DbContract\DbContract.csproj", "{CDFBD71C-58C7-4646-A2A0-EA3317F5A32F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbContract", "DbContract\DbContract.csproj", "{CDFBD71C-58C7-4646-A2A0-EA3317F5A32F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
