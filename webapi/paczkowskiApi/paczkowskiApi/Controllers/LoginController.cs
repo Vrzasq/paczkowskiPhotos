@@ -1,6 +1,7 @@
 ﻿using Commons;
 using DbContract.Entities;
 using DbContract.RepositoryContract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using paczkowskiApi.Models;
@@ -33,6 +34,17 @@ namespace paczkowskiApi.Controllers
             }
 
             return loginResult;
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult IsLoggedIn()
+        {
+            return new JsonResult(
+                new
+                {
+                    IsLoggedIn = true
+                });
         }
 
         private void Authenticate(string email)
