@@ -2,7 +2,8 @@ let baseUrl = 'https://localhost:44374/api';
 
 export default {
     register: {
-        newUser: `${baseUrl}/register/newuser`
+        newUser: `${baseUrl}/register/newuser`,
+        getAllUsers: `${baseUrl}/register/GetAllUsers`
     },
 
     login: {

@@ -19,10 +19,10 @@ export default {
             title: "Create Account",
             buttonLabel: "Register",
             formInputs: {
-                name: { label: "Name", inputType: "text", placeholder: 'ex. Johny', vlaue: '' },
-                email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', vlaue: '' },
-                password: { label: "Password", inputType: "password", placeholder: '', vlaue: '' },
-                confirmPassword: { label: "Confrim Password", inputType: "password", placeholder: '', vlaue: '' }
+                name: { label: "Name", inputType: "text", placeholder: 'ex. Johny', value: '' },
+                email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', value: '' },
+                password: { label: "Password", inputType: "password", placeholder: '', value: '' },
+                confirmPassword: { label: "Confrim Password", inputType: "password", placeholder: '', value: '' }
             }
         };
     },
@@ -42,7 +42,10 @@ export default {
                 contentType: 'application/json',
                 url: Services.register.newUser,
                 data: JSON.stringify(request),
-                success: function (data) { alert(`done ${data}`); },
+                success: function (data) {
+                    alert(`success `);
+                    console.log(data);
+                },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });
         }

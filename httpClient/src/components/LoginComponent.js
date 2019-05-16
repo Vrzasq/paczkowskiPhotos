@@ -6,12 +6,17 @@ export default {
         BaseForm,
     },
     template: `
+    <div>
     <base-form
         :title="title"
         :button-label="buttonLabel"
         :form-inputs="formInputs"
         @submit="postToApi"
-    ></base-form>
+    >
+        
+    </base-form>
+    <button @click="auth">Click</button>
+    </div>
     `,
 
     data: function () {
@@ -19,8 +24,8 @@ export default {
             title: "Login to Your account",
             buttonLabel: "Sign In",
             formInputs: {
-                email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', vlaue: '' },
-                password: { label: "Password", inputType: "password", placeholder: '', vlaue: '' },
+                email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', value: '' },
+                password: { label: "Password", inputType: "password", placeholder: '', value: '' },
             }
         };
     },
@@ -37,9 +42,22 @@ export default {
             $.ajax({
                 method: 'POST',
                 contentType: 'application/json',
+                xhrFields: { withCredentials: true },
                 url: Services.login.signIn,
                 data: JSON.stringify(request),
-                success: function (data) { alert(`done ${data}`); },
+                success: function (data) {
+                    alert('success');
+                    console.log(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) { console.log(`${textStatus} ${errorThrown}`); }
+            });
+        },
+        auth: function () {
+            $.ajax({
+                method: 'GET',
+                xhrFields: { withCredentials: true },
+                url: Services.register.getAllUsers,
+                success: function (data) { console.log(data) },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });
         }
