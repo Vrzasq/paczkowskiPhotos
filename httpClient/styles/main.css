@@ -16,11 +16,7 @@
 .site-content {
     margin-top: 20px;
     padding: 40px;
-}
-
-button {
-    position: relative;
-    top: 1000px;
+    text-align: center;
 }
 
 .control-bar-element {
@@ -41,4 +37,19 @@ button {
 
 .control-bar-element:hover {
     background-color: #7e7d7d;
+}
+
+.form-data {
+    width: 25%;
+    margin: auto;
+}
+
+.form-data .form-row {
+    margin: 15px auto;
+    text-align: left;
+}
+
+.form-data label {
+    display: block;
+    font-weight: bold;
 }

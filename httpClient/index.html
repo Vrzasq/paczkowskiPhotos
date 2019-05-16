@@ -14,7 +14,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="lib/jqeury.visible.min.js"></script>
-    <script src="scripts/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <title>Organize Your Photos</title>
 </head>
@@ -32,34 +31,27 @@
                 v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }]"
                 v-on:click="currentBar = bar">{{ bar.name }}</div>
             </div>
+            
             <div class="w3-container site-content">
-                some random text
                 <component
                     v-bind:is="currentBar.component"
                 ></component>
             </div>
         </div>
-
-        <button v-on:click="test">click</button>
     </div>
 
-    <script>
+    <script type="module">
+        import ControlBar from './src/index.js';
+
         var vueData = {
             indexHeader: 'Paczkowski Photos',
-            controlBar: controlBar,
-            currentBar: controlBar[0]
-        };
-
-        var vueMethods = {
-            test: function () {
-                alert("hello");
-            }
+            controlBar: ControlBar,
+            currentBar: ControlBar[1],
         };
 
         var vueApp = new Vue({
             el: "#vueApp",
-            data: vueData,
-            methods: vueMethods
+            data: vueData
         });
 
         $(window).scroll(function () {
