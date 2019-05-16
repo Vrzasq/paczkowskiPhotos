@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using paczkowskiApi.security;
@@ -24,9 +25,10 @@ namespace paczkowskiApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
-            options.AddPolicy("default", builder =>
+                options.AddPolicy("default", builder =>
                             builder
                             .AllowAnyOrigin()
+                            .AllowCredentials()
                             .AllowAnyHeader()
                             .AllowAnyMethod()));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
