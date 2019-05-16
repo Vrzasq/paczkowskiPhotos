@@ -47,17 +47,21 @@ export default {
                 data: JSON.stringify(request),
                 success: function (data) {
                     alert('success');
-                    console.log(data);
+                    console.log(phot);
                 },
                 error: function (jqXHR, textStatus, errorThrown) { console.log(`${textStatus} ${errorThrown}`); }
             });
         },
         auth: function () {
+            let vue = this;
             $.ajax({
                 method: 'GET',
                 xhrFields: { withCredentials: true },
                 url: Services.register.getAllUsers,
-                success: function (data) { console.log(data) },
+                success: function (data) {
+                    console.log(data);
+                    vue.$emit('component-change', 'photos');
+                },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });
         }

@@ -8,6 +8,7 @@ export default {
 
     login: {
         signIn: `${baseUrl}/login/signin`,
+        isLoggedIn: `${baseUrl}/login/IsLoggedIn`,
         logout: `${baseUrl}/login/logout`
     },
 
