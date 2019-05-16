@@ -1,4 +1,5 @@
 import RegisterComponent from './components/RegisterComponent.js';
+import LoginComponent from './components/LoginComponent.js';
 
 let controlBar = [
     {
@@ -13,9 +14,7 @@ let controlBar = [
     },
     {
         name: 'LOGIN',
-        component: {
-            template: '<div>LOGIN</div>'
-        }
+        component: LoginComponent
     }
 ];
 
