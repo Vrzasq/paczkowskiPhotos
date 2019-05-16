@@ -1,4 +1,4 @@
-import RegisterComponent from './components/register-component.js';
+import RegisterComponent from './components/RegisterComponent.js';
 
 let controlBar = [
     {
