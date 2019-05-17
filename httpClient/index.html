@@ -25,11 +25,12 @@
         </div>
         <div class="content">
             <div class="w3-bar control-bar">
-                <div
-                v-for="bar in controlBar" 
-                v-bind:key="bar.name"
-                v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }]"
-                v-on:click="currentBar = bar">{{ bar.name }}</div>
+                <div v-for="bar in controlBar" 
+                    v-bind:key="bar.name"
+                    v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }, { hidden: !bar.display }]"
+                    v-on:click="currentBar = bar">
+                    {{ bar.name }}
+                </div>
             </div>
             
             <div class="w3-container site-content">
@@ -42,17 +43,22 @@
     </div>
 
     <script type="module">
-        import ControlBar from './src/index.js';
+        import { ControlBar, RoutesComponents } from './src/index.js';
+        let IsloggedIn = true;        
 
         var vueData = {
             indexHeader: 'Paczkowski Photos',
             controlBar: ControlBar,
-            currentBar: ControlBar.login,
+            currentBar: IsloggedIn ? ControlBar.photos : ControlBar.login,
+            IsloggedIn: IsloggedIn
         };
 
         var vueMethods = {
             changeComponent(component) {
-                this.currentBar = ControlBar[component];
+                this.currentBar = RoutesComponents[component];
+                this.controlBar.photos.display = this.IsloggedIn;
+                this.controlBar.login.display = !this.IsloggedIn;
+                this.controlBar.register.display = !this.IsloggedIn;
             } 
         }
 

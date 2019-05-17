@@ -25,11 +25,13 @@ export default {
             success: function (data) {
                 console.log(data);
                 if (!data.isLoggedIn) {
+                    vue.$root.IsLoggedIn = data.isLoggedIn;
                     vue.$emit('component-change', 'login');
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(`${textStatus} ${errorThrown}`);
+                vue.$root.IsLoggedIn = false;
                 vue.$emit('component-change', 'login');
             }
         });
