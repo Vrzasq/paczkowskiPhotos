@@ -1,4 +1,6 @@
-import Services from '../services.js';
+'use strict';
+
+import Commons from '../commons.js';
 
 export default {
     components: {
@@ -18,22 +20,11 @@ export default {
 
     mounted: function () {
         let vue = this;
-        $.ajax({
-            method: 'GET',
-            xhrFields: { withCredentials: true },
-            url: Services.login.isLoggedIn,
-            success: function (data) {
-                console.log(data);
-                if (!data.isLoggedIn) {
-                    vue.$root.IsLoggedIn = data.isLoggedIn;
-                    vue.$emit('component-change', 'login');
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert(`${textStatus} ${errorThrown}`);
-                vue.$root.IsLoggedIn = false;
-                vue.$emit('component-change', 'login');
-            }
-        });
+        let isLoggedIn = Commons.isLoggedIn();
+        console.log(`photos ${isLoggedIn}`);
+        
+        if (!isLoggedIn) {
+            vue.$emit('component-change', { component: 'login', isLoggedIn });
+        }
     }
 }

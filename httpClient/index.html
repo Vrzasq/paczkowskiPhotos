@@ -43,22 +43,23 @@
     </div>
 
     <script type="module">
+        'use strict';
+
         import { ControlBar, RoutesComponents } from './src/index.js';
-        let IsloggedIn = true;        
+        import Commons from './src/commons.js';
 
         var vueData = {
             indexHeader: 'Paczkowski Photos',
             controlBar: ControlBar,
-            currentBar: IsloggedIn ? ControlBar.photos : ControlBar.login,
-            IsloggedIn: IsloggedIn
+            currentBar: ControlBar.photos
         };
 
         var vueMethods = {
-            changeComponent(component) {
-                this.currentBar = RoutesComponents[component];
-                this.controlBar.photos.display = this.IsloggedIn;
-                this.controlBar.login.display = !this.IsloggedIn;
-                this.controlBar.register.display = !this.IsloggedIn;
+            changeComponent(data) {
+                this.controlBar.photos.display = data.isloggedIn;
+                this.controlBar.login.display = !data.isloggedIn;
+                this.controlBar.register.display = !data.isloggedIn;
+                this.currentBar = RoutesComponents[data.component];
             } 
         }
 
@@ -67,6 +68,8 @@
             data: vueData,
             methods: vueMethods
         });
+
+        window.VueApp = vueApp;
 
         $(window).scroll(function () {
             let isvisible = $('.index-header').visible(true);
