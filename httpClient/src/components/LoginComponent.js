@@ -47,7 +47,7 @@ export default {
                 data: JSON.stringify(request),
                 success: function (data) {
                     alert('success');
-                    console.log(phot);
+                    console.log(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) { console.log(`${textStatus} ${errorThrown}`); }
             });
