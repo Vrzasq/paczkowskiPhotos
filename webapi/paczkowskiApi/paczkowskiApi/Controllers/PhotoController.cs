@@ -139,7 +139,7 @@ namespace paczkowskiApi.Controllers
                 DisplayName = model.DisplayName,
                 FileName = model.FileName,
                 PhotoNum = DateTime.Now.Ticks.ToString(),
-                Image = Convert.FromBase64String(model.Base64Image)
+                Image = model.Image
             };
         }
 
