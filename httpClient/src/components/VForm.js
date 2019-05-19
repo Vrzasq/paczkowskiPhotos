@@ -23,7 +23,7 @@ export default {
     },
     template: `
     <div class="form-data">
-        <h2 class="w3-blue-grey">{{ title }}</h2>
+        <h2 class="w3-blue-grey" v-once>{{ title }}</h2>
         <base-input v-for="formInput in formInputs"
             v-bind="formInput"
             v-model="formInput.value"

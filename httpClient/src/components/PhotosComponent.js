@@ -7,17 +7,18 @@ export default {
         AddPhotoComponent
     },
     template: `
-    <div>
+    <div class="form-data">
         MY PHOTOS
-        <div>
-            <img :src="imageDataUrl" alt="dupa"/>
+        <div class="form-row" v-for="image in images">
+            <img :src="dataType + image.image" alt=":("/>
         </div>
     </div>
     `,
 
     data: function () {
         return {
-            imageDataUrl: ''
+            images: [],
+            dataType: 'data:image/jpeg;base64,'
         };
     },
 
@@ -28,9 +29,8 @@ export default {
             xhrFields: { withCredentials: true },
             url: Services.photo.getPhotos,
             success: function (data) {
-                alert('success');
                 console.log(data);
-                vm.imageDataUrl = 'data:image/jpeg;base64,' + data[0].image;
+                vm.images = data;
             },
             error: function (jqXHR, textStatus, errorThrown) { console.log(`${textStatus} ${errorThrown}`); }
         });

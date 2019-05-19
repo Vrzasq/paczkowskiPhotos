@@ -6,6 +6,10 @@ export default {
         BaseInput,
         FileInput
     },
+    model: {
+        prop: 'imageInfo',
+        event: 'change'
+    },
     props: {
         title: {
             type: String,
@@ -15,44 +19,42 @@ export default {
             type: String,
             required: true
         },
+        imageInfo: {
+            type: Object,
+            required: true
+        }
     },
     template: `
     <div class="form-data">
-        <h2 class="w3-blue-grey">{{ title }}</h2>
+        <h2 class="w3-blue-grey" v-once>{{ title }}</h2>
         <base-input
             v-bind="nameInputAttr"
-            v-model="fileInfo.imageName">
+            v-model="imageInfo.imageName">
         </base-input>
         <base-input
             v-bind="categoryInputAttr"
-            v-model="fileInfo.category">
+            v-model="imageInfo.category">
         </base-input>
-        <file-input v-if="!fileInfo.imageDataUrl"
+        <file-input v-if="!imageInfo.imageDataUrl"
             :label="uploadFileLabel"
             accept="image/jpeg"
             @change="uploadFile">
         </file-input>
         <div class="img-preview" v-else>
-            <img :src="fileInfo.imageDataUrl" />
+            <img :src="imageInfo.imageDataUrl" />
             <button class="w3-btn w3-blue-grey" @click="removeImage">{{ removeImgae }}</button>
         </div>
         <button
             class="w3-btn w3-blue-grey"
-            @click="$emit('submit', fileInfo)"
+            @click="$emit('submit')"
             type="button"
-            :disabled="valid">
+            :disabled="!valid">
             {{ buttonLabel }}            
         </button>
     </div>
     `,
     data() {
         return {
-            fileInfo: {
-                fileName: '',
-                category: '',
-                imageName: '',
-                imageDataUrl: ''
-            },
             nameInputAttr: {
                 label: "Name",
                 inputType: "text"
@@ -62,7 +64,7 @@ export default {
                 inputType: "text"
             },
             removeImgae: 'Remove Image',
-            uploadFileLabel: 'Click or Drag photo to upload'
+            uploadFileLabel: 'Click or Drag image to upload'
         }
     },
     methods: {
@@ -78,20 +80,23 @@ export default {
             }
             var reader = new FileReader();
             var vm = this;
-            vm.fileInfo.fileName = file.name;
+            vm.imageInfo.fileName = file.name;
+            if (vm.imageInfo.imageName === '')
+                vm.imageInfo.imageName = file.name;
 
             reader.onload = (e) => {
-                vm.fileInfo.imageDataUrl = e.target.result;
+                vm.imageInfo.imageDataUrl = e.target.result;
             };
             reader.readAsDataURL(file);
+            vm.$emit('change', vm.imageInfo);
         },
         removeImage() {
-            this.fileInfo.imageDataUrl = '';
-        }
+            this.$emit('remove-image');
+        },
     },
     computed: {
         valid() {
-            return this.fileInfo.imageDataUrl === '';
+            return this.imageInfo.imageDataUrl !== '';
         }
     }
 
