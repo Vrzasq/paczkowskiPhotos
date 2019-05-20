@@ -24,7 +24,7 @@ export default {
                 password: { label: "Password", inputType: "password", placeholder: '', value: '' },
                 confirmPassword: { label: "Confrim Password", inputType: "password", placeholder: '', value: '' }
             }
-        };
+        }
     },
 
     methods: {

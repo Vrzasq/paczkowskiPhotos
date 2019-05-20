@@ -1,18 +1,14 @@
 import Services from '../services.js';
 import AddPhotoForm from './AddPhotoForm.js';
-import { ImageInfo } from '../dataObjects.js';
 
 export default {
     components: {
         AddPhotoForm
     },
     template: `
-    <add-photo-form
-        v-model="imageInfo"
-        :title="formAttr.title"
-        :buttonLabel="formAttr.buttonLabel"
-        @submit="postToApi"
-        @remove-image="resetState">
+    <add-photo-form ref="photoForm"
+        v-bind="formAttr"
+        @submit="postToApi">
     </add-photo-form>
     `,
 
@@ -21,19 +17,18 @@ export default {
             formAttr: {
                 title: 'Upload Photo',
                 buttonLabel: 'Submit'
-            },
-            imageInfo: new ImageInfo()
+            }
         }
     },
 
     methods: {
-        postToApi() {
+        postToApi(imageInfo) {
             let vm = this;
             let request = {
-                displayName: this.imageInfo.imageName,
-                fileName: this.imageInfo.fileName,
-                category: this.imageInfo.category,
-                image: this.imageInfo.imageDataUrl.split(',')[1]
+                displayName: imageInfo.imageName,
+                fileName: imageInfo.fileName,
+                category: imageInfo.category,
+                image: imageInfo.imageDataUrl.split(',')[1]
             }
             console.log(request);
             $.ajax({
@@ -45,16 +40,15 @@ export default {
                 success: function (data) {
                     if (data) {
                         alert('SUCCESS');
-                        vm.resetState();
+                        vm.$refs.photoForm.reset();
                     } else {
                         alert('FAIL');
                     }
                 },
-                error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(`${textStatus} ${errorThrown}`); 
+                }
             });
-        },
-        resetState() {
-            this.imageInfo = new ImageInfo();
         }
     }
 }

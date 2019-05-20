@@ -1,14 +1,11 @@
 import BaseInput from './VInput.js';
 import FileInput from './VInputFile.js';
+import { ImageInfo } from '../dataObjects.js';
 
 export default {
     components: {
         BaseInput,
         FileInput
-    },
-    model: {
-        prop: 'imageInfo',
-        event: 'change'
     },
     props: {
         title: {
@@ -17,10 +14,6 @@ export default {
         },
         buttonLabel: {
             type: String,
-            required: true
-        },
-        imageInfo: {
-            type: Object,
             required: true
         }
     },
@@ -42,11 +35,11 @@ export default {
         </file-input>
         <div class="img-preview" v-else>
             <img :src="imageInfo.imageDataUrl" />
-            <button class="w3-btn w3-blue-grey" @click="removeImage">{{ removeImgae }}</button>
+            <button class="w3-btn w3-blue-grey" @click="reset">{{ removeImgae }}</button>
         </div>
         <button
             class="w3-btn w3-blue-grey"
-            @click="$emit('submit')"
+            @click="$emit('submit', imageInfo)"
             type="button"
             :disabled="!valid">
             {{ buttonLabel }}            
@@ -55,6 +48,7 @@ export default {
     `,
     data() {
         return {
+            imageInfo: new ImageInfo(),
             nameInputAttr: {
                 label: "Name",
                 inputType: "text"
@@ -88,16 +82,14 @@ export default {
                 vm.imageInfo.imageDataUrl = e.target.result;
             };
             reader.readAsDataURL(file);
-            vm.$emit('change', vm.imageInfo);
         },
-        removeImage() {
-            this.$emit('remove-image');
-        },
+        reset() {
+            this.imageInfo = new ImageInfo();
+        }
     },
     computed: {
         valid() {
             return this.imageInfo.imageDataUrl !== '';
         }
     }
-
 }
