@@ -92,3 +92,31 @@
 .img-preview button{
     margin: 10px auto;
 }
+
+.photo-display {
+    text-align: left;
+    width: 50%;
+    min-width: 600px;
+    border: 1px solid black;
+    margin: auto;
+}
+
+.photo-display h2 {
+    text-align: center;
+}
+
+.single-photo {
+    margin: 10px;
+    width: 120px;
+    display: inline-block;
+    text-align: center;
+}
+
+.single-photo img {
+    margin: 5px auto;
+    width: 100%;
+}
+
+.single-photo button {
+    padding: 0px 5px;
+}
