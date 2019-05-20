@@ -19,7 +19,7 @@ export default {
     },
     template: `
     <div class="single-photo">
-        <img :src="dataType + image" alt=":(" />
+        <img v-img :src="dataType + image" alt=":(" />
         <div>
             <button class="w3-btn w3-blue-grey">{{ button.edit }}</button>
             <button class="w3-btn w3-blue-grey">{{ button.delete }}</button>

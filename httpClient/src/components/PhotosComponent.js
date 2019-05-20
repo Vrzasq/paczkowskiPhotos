@@ -9,23 +9,21 @@ export default {
     template: `
     <div class="photo-display">
         <h2 class="w3-blue-grey" v-once>{{ title }}</h2>
-        <photo-view-component v-for="image in images"
-            :image="image.image"
-            :imageName="image.displayName"
-            :imageId="image.photoNum"
-            :key="image.photoNum">
-        </photo-view-component>
+        <div class="photos-container">
+            <photo-view-component v-for="image in images"
+                :image="image.image"
+                :imageName="image.displayName"
+                :imageId="image.photoNum"
+                :key="image.photoNum">
+            </photo-view-component>
+        </div>        
     </div>
     `,
 
     data: function () {
         return {
             title: 'MY PHOTOS',
-            images: [
-                {},
-                {},
-                {}
-            ],
+            images: [],
             dataType: 'data:image/jpeg;base64,'
         };
     },
