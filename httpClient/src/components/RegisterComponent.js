@@ -43,7 +43,7 @@ export default {
                 url: Services.register.newUser,
                 data: JSON.stringify(request),
                 success: function (data) {
-                    alert(`success `);
+                    alert(`SUCCESSS `);
                     console.log(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }

@@ -27,7 +27,8 @@
             <div class="w3-bar control-bar">
                 <div v-for="bar in controlBar" 
                     v-bind:key="bar.name"
-                    v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }, { hidden: !bar.display }]"
+                    v-if="bar.display"
+                    v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }]"
                     v-on:click="currentBar = bar">
                     {{ bar.name }}
                 </div>
@@ -58,9 +59,10 @@
 
         var vueMethods = {
             changeComponent(data) {
-                this.controlBar.photos.display = data.isloggedIn;
-                this.controlBar.login.display = !data.isloggedIn;
-                this.controlBar.register.display = !data.isloggedIn;
+                this.controlBar.photos.display = data.isLoggedIn;
+                this.controlBar.addPhoto.display = data.isLoggedIn;
+                this.controlBar.login.display = !data.isLoggedIn;
+                this.controlBar.register.display = !data.isLoggedIn;
                 this.currentBar = RoutesComponents[data.component];
             } 
         }

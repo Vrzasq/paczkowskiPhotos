@@ -6,17 +6,12 @@ export default {
         BaseForm,
     },
     template: `
-    <div>
     <base-form
         :title="title"
         :button-label="buttonLabel"
         :form-inputs="formInputs"
         @submit="postToApi"
-    >
-        
-    </base-form>
-    <button @click="auth">Click</button>
-    </div>
+    ></base-form>
     `,
 
     data: function () {
@@ -32,6 +27,7 @@ export default {
 
     methods: {
         postToApi: function () {
+            let vm = this;
             let request = {
                 email: this.formInputs.email.value,
                 password: this.formInputs.password.value
@@ -46,23 +42,11 @@ export default {
                 url: Services.login.signIn,
                 data: JSON.stringify(request),
                 success: function (data) {
-                    alert('success');
+                    alert('SUCCESS');
                     console.log(data);
+                    vm.$emit('component-change', { isLoggedIn: true, component: 'photos' })
                 },
                 error: function (jqXHR, textStatus, errorThrown) { console.log(`${textStatus} ${errorThrown}`); }
-            });
-        },
-        auth: function () {
-            let vue = this;
-            $.ajax({
-                method: 'GET',
-                xhrFields: { withCredentials: true },
-                url: Services.register.getAllUsers,
-                success: function (data) {
-                    console.log(data);
-                    vue.$emit('component-change', 'photos');
-                },
-                error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });
         }
     },
