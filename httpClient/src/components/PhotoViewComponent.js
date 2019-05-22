@@ -19,7 +19,7 @@ export default {
     },
     template: `
     <div class="single-photo">
-        <img v-img:title="imageName" :src="dataType + image" alt=":(" />
+        <img v-img:title="imageName" :src="dataUrl" alt=":(" />
         <div>
             <button class="w3-btn w3-blue-grey">{{ button.edit }}</button>
             <button @click="$emit('delete', imageData)" class="w3-btn w3-blue-grey">{{ button.delete }}</button>
@@ -34,11 +34,17 @@ export default {
                 category: this.category,
                 imageId: this.imageId
             },
-            dataType: 'data:image/jpeg;base64,',
+            dataType: 'data:image/jpeg;base64',
             button: {
                 edit: "Edit",
                 delete: "Delete"
             }
+        }
+    },
+
+    computed: {
+        dataUrl() {
+            return `${this.dataType},${this.image}`;
         }
     }
 }

@@ -22,13 +22,14 @@ export default {
                 name: { label: "Name", inputType: "text", placeholder: 'ex. Johny', value: '' },
                 email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', value: '' },
                 password: { label: "Password", inputType: "password", placeholder: '', value: '' },
-                confirmPassword: { label: "Confrim Password", inputType: "password", placeholder: '', value: '' }
+                confirmPassword: { label: "Confirm Password", inputType: "password", placeholder: '', value: '' }
             }
         }
     },
 
     methods: {
         postToApi: function () {
+            let vm = this;
             let request = {
                 name: this.formInputs.name.value,
                 email: this.formInputs.email.value,
@@ -43,8 +44,8 @@ export default {
                 url: Services.register.newUser,
                 data: JSON.stringify(request),
                 success: function (data) {
-                    alert(`SUCCESSS `);
-                    console.log(data);
+                    alert(`SUCCESS ${data}`);
+                    vm.$emit('component-change', { isLoggedIn: true, component: 'login' })
                 },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });
