@@ -131,6 +131,6 @@ namespace DbContract.Repository
         }
 
         public IEnumerable<string> GetCategories(User user) =>
-            dbContext.Photos.Where(u => user.Id == user.Id).Select(p => p.Category);
+            dbContext.Photos.Where(u => user.Id == user.Id).Where(p => p.Category != string.Empty).Select(c => c.Category).Distinct();
     }
 }
