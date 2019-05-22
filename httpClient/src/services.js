@@ -15,9 +15,10 @@ export default {
     photo: {
         addPhoto: `${baseUrl}/photo/addphoto`,
         getPhotos: `${baseUrl}/photo/GetPhotos`,
+        getUncategorizedPhotos: `${baseUrl}/photo/GetUncategorizedPhotos`,
+        getPhotosForCategory: `${baseUrl}/photo/GetPhotosForCategory`,
         editPhoto: `${baseUrl}/photo/EditPhoto`,
         deletePhoto: `${baseUrl}/photo/DeletePhoto`,
-        addCategory: `${baseUrl}/photo/AddCategory`,
         getCategories: `${baseUrl}/photo/GetCategories`,
         deleteCategory: `${baseUrl}/photo/DeleteCategory`,
     }
