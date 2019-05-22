@@ -45,7 +45,8 @@ export default {
                 data: JSON.stringify(request),
                 success: function (data) {
                     alert(`SUCCESS ${data}`);
-                    vm.$emit('component-change', { isLoggedIn: true, component: 'login' })
+                    if (data === 'ok')
+                        vm.$emit('component-change', { isLoggedIn: false, component: 'login' })
                 },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });

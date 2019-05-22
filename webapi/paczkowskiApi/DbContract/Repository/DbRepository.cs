@@ -124,34 +124,7 @@ namespace DbContract.Repository
             dbContext.SaveChanges();
         }
 
-        public IEnumerable<Category> GetUserCategories(User user) =>
-            dbContext.Categories.Where(x => x.User.Id == user.Id);
-
-        public string AddCategory(Category category)
-        {
-            try
-            {
-                var user = dbContext.Users.Include(p => p.Photos).Single(u => u.Id == category.User.Id);
-                var existingCategory = user.Categories.FirstOrDefault(x => x.Name == category.Name);
-
-                if (existingCategory != null)
-                    throw new Exception($"Category [{category.Name}] alreadye exists");
-
-                user.Categories.Add(category);
-                dbContext.SaveChanges();
-                return "ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        public void DeleteCategory(Category category)
-        {
-            var dbPhoto = dbContext.Categories.Single(c => c.Name == category.Name && c.User.Id == c.User.Id);
-            dbContext.Remove(dbPhoto);
-            dbContext.SaveChanges();
-        }
+        public IEnumerable<string> GetCategories(User user) =>
+            dbContext.Photos.Where(u => user.Id == user.Id).Select(p => p.Category);
     }
 }
