@@ -107,6 +107,12 @@ namespace DbContract.Repository
             return result;
         }
 
+        public IEnumerable<Photo> GetPhotosForCategory(User user, string category) =>
+            dbContext.Photos.Where(p => p.User.Id == user.Id && p.Category == category.Sanitize());
+
+        public IEnumerable<Photo> GetUncategorizedPhotos(User user) =>
+            dbContext.Photos.Where(p => p.User.Id == user.Id && p.Category == string.Empty);
+
         public void EditPhoto(Photo photo)
         {
             var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum && p.User.Id == photo.User.Id);

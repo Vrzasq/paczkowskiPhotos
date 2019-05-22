@@ -53,6 +53,26 @@ namespace paczkowskiApi.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<IEnumerable<GetPhotosResult>> GetPhotosForCategory(CategoryModel model)
+        {
+            var photos = _repository.GetPhotosForCategory(LoggedUser, model.Name);
+            var result = photos.Select(x => new GetPhotosResult(x)).ToArray();
+
+            return result;
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<IEnumerable<GetPhotosResult>> GetUncategorizedPhotos()
+        {
+            var photos = _repository.GetUncategorizedPhotos(LoggedUser);
+            var result = photos.Select(x => new GetPhotosResult(x)).ToArray();
+
+            return result;
+        }
+
         [HttpPut]
         [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
         public ActionResult<bool> EditPhoto(EditPhotoModel photoModel)

@@ -16,6 +16,8 @@ namespace DbContract.RepositoryContract
         void AddLoggedUser(LoggedUser user);
         string GetActiveToken(string email);
         IEnumerable<Photo> GetUserPhotos(User user);
+        IEnumerable<Photo> GetPhotosForCategory(User user, string category);
+        IEnumerable<Photo> GetUncategorizedPhotos(User user);
         void EditPhoto(Photo photo);
         void DeletePhoto(Photo photo);
         IEnumerable<string> GetCategories(User user);
