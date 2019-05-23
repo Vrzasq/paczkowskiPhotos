@@ -6,14 +6,30 @@ export default {
     components: {
         PhotoViewComponent
     },
+    props: {
+        displayCategories: {
+            type: Boolean,
+            default() {
+                return true;
+            }
+        },
+        category: {
+            type: String,
+            default() {
+                return '';
+            }
+        }
+    },
     template: `
     <div class="photo-display">
         <h2 class="w3-blue-grey" v-once>{{ title }}</h2>
-        <div class="categories-container">
+        <div class="categories-container" v-if="displayCategories">
             <h3 class="w3-blue-grey">{{ categoriesTitle }}</h3>
             <div class="category" v-for="category in categories">
                 <span>{{ category.name }}</span>
                 <img @click="showCategory(category.name)" src="images/folder.png" />
+                <button class="w3-btn w3-blue-grey">Edit</button>
+                <button class="w3-btn w3-blue-grey">Delete</button>
             </div>
         </div>
         <div class="photos-container">
@@ -79,10 +95,11 @@ export default {
 
         getPhotos() {
             let vm = this;
+            let url = this.getImagesUrl;
             $.ajax({
                 method: 'GET',
                 xhrFields: { withCredentials: true },
-                url: Services.photo.getUncategorizedPhotos,
+                url: url,
                 success: function (data) {
                     console.log(data);
                     vm.images = data;
@@ -92,8 +109,17 @@ export default {
         }
     },
 
+    computed: {
+        getImagesUrl() {
+            if (!this.category)
+                return Services.photo.getUncategorizedPhotos;
+            return Services.photo.getPhotosForCategory + `/${this.category}`;
+        }
+    },
+
     mounted: function () {
-        this.getCategories();
+        if (this.displayCategories)
+            this.getCategories();
         this.getPhotos();
     },
 }

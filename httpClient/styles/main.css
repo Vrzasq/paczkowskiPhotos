@@ -138,7 +138,7 @@
     cursor: pointer;
 }
 
-.single-photo button {
+.single-photo button, .category button {
     padding: 0px 5px;
 }
 
