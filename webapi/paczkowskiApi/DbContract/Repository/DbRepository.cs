@@ -136,5 +136,12 @@ namespace DbContract.Repository
             Where(p => p.User.Id == user.Id && p.Category != string.Empty).
             Select(c => c.Category).
             Distinct();
+
+        public void DeleteCategory(User user, string category)
+        {
+            IEnumerable<Photo> photos = dbContext.Photos.Include(p => p.User).Where(p => p.Category == category && p.User.Id == user.Id);
+            dbContext.RemoveRange(photos);
+            dbContext.SaveChanges();
+        }
     }
 }

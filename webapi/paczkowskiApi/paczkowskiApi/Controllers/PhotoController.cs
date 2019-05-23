@@ -122,6 +122,21 @@ namespace paczkowskiApi.Controllers
             return result;
         }
 
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<bool> DeleteCategory(CategoryModel model)
+        {
+            try
+            {
+                _repository.DeleteCategory(LoggedUser, model.Name);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         private Photo GetPhotoEntity(AddPhotoModel model)
         {
             return new Photo

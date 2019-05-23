@@ -21,5 +21,6 @@ namespace DbContract.RepositoryContract
         void EditPhoto(Photo photo);
         void DeletePhoto(Photo photo);
         IEnumerable<string> GetCategories(User user);
+        void DeleteCategory(User user, string category);
     }
 }
