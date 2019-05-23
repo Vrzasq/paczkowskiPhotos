@@ -53,11 +53,11 @@ namespace paczkowskiApi.Controllers
             return result;
         }
 
-        [HttpGet]
+        [HttpGet("{category}")]
         [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
-        public ActionResult<IEnumerable<GetPhotosResult>> GetPhotosForCategory(CategoryModel model)
+        public ActionResult<IEnumerable<GetPhotosResult>> GetPhotosForCategory(string category)
         {
-            var photos = _repository.GetPhotosForCategory(LoggedUser, model.Name);
+            var photos = _repository.GetPhotosForCategory(LoggedUser, category);
             var result = photos.Select(x => new GetPhotosResult(x)).ToArray();
 
             return result;

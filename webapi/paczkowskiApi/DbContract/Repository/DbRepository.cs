@@ -127,10 +127,14 @@ namespace DbContract.Repository
         {
             var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum && p.User.Id == photo.User.Id);
             dbContext.Remove(dbPhoto);
+            dbContext.Remove(dbPhoto);
             dbContext.SaveChanges();
         }
 
         public IEnumerable<string> GetCategories(User user) =>
-            dbContext.Photos.Where(u => user.Id == user.Id).Where(p => p.Category != string.Empty).Select(c => c.Category).Distinct();
+            dbContext.Photos.Include(u => u.User).
+            Where(p => p.User.Id == user.Id && p.Category != string.Empty).
+            Select(c => c.Category).
+            Distinct();
     }
 }
