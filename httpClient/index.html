@@ -37,6 +37,7 @@
             <div class="w3-container site-content">
                 <component
                     v-bind:is="currentBar.component"
+                    v-bind:event-data="currentBar.eventData"
                     @component-change="changeComponent"
                 ></component>
             </div>
@@ -63,7 +64,9 @@
                 this.controlBar.addPhoto.display = data.isLoggedIn;
                 this.controlBar.login.display = !data.isLoggedIn;
                 this.controlBar.register.display = !data.isLoggedIn;
-                this.currentBar = RoutesComponents[data.component];
+                let bar = RoutesComponents[data.component];
+                bar.eventData = data.eventData;
+                this.currentBar = bar;
             } 
         }
 
