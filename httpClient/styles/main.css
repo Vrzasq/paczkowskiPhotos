@@ -183,3 +183,7 @@ img {
     height: 200px;
     margin-top: 10px;
 }
+
+.data-error {
+    border: 1px solid red !important;
+}
