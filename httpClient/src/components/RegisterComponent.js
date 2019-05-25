@@ -10,7 +10,9 @@ export default {
         :title="title"
         :button-label="buttonLabel"
         :form-inputs="formInputs"
+        :form-valid="formValid"
         @submit="postToApi"
+        @input="fieldValidation"
     ></base-form>
     `,
 
@@ -20,9 +22,9 @@ export default {
             buttonLabel: "Register",
             formInputs: {
                 name: { label: "Name", inputType: "text", placeholder: 'ex. Johny', value: '' },
-                email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', value: '' },
-                password: { label: "Password", inputType: "password", placeholder: '', value: '' },
-                confirmPassword: { label: "Confirm Password", inputType: "password", placeholder: '', value: '' }
+                email: { label: "Email", inputType: "email", placeholder: 'ex. Johny@photos.com', isValid: true, value: '' },
+                password: { label: "Password", inputType: "password", placeholder: '', isValid: true, value: '' },
+                confirmPassword: { label: "Confirm Password", inputType: "password", placeholder: '', isValid: true, value: '' }
             }
         }
     },
@@ -50,6 +52,28 @@ export default {
                 },
                 error: function (jqXHR, textStatus, errorThrown) { alert(`${textStatus} ${errorThrown}`); }
             });
+        },
+
+        fieldValidation() {
+            if (this.formInputs.email.value === '')
+                this.formInputs.email.isValid = false;
+            else
+                this.formInputs.email.isValid = true;
+
+            if (this.formInputs.password.value !== ''
+                && (this.formInputs.password.value !== this.formInputs.confirmPassword.value)) {
+                this.formInputs.confirmPassword.isValid = false;
+            } else {
+                this.formInputs.confirmPassword.isValid = true;
+            }
         }
     },
+
+    computed: {
+        formValid() {
+            return this.formInputs.password.value !== ''
+                && (this.formInputs.password.value === this.formInputs.confirmPassword.value)
+                && this.formInputs.email.value !== ''
+        }
+    }
 }
