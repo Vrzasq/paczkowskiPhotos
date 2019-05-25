@@ -26,7 +26,9 @@ namespace paczkowskiApi.security
                     configurationBuilder.AddJsonFile(path, false);
                     var root = configurationBuilder.Build();
 
-                    _instance = root.GetSection("AesEncryption").Get<AesEncryption>();
+                    _instance = new AesEncryption();
+                    _instance.Key = root.GetSection("AesEncryption")["Key"];
+                    _instance.IV = root.GetSection("AesEncryption")["IV"];
                 }
 
                 return _instance;
@@ -41,11 +43,11 @@ namespace paczkowskiApi.security
     {
         public static string Encrypt<T>(T blob)
         {
-            string json = blob.ToJson();
-            string base64 = ConverToBase64(json);
-            string encrypetd = GetAesEcnryptedString(base64);
+            string json = blob.ToJson(); ;
+            byte[] encrypetdBytes = GetAesEcnryptedBytes(json);
+            string encrypted = Convert.ToBase64String(encrypetdBytes);
 
-            return encrypetd;
+            return encrypted;
         }
 
         public static T Decrypt<T>(string encryptedBlob) where T : new()
@@ -54,23 +56,22 @@ namespace paczkowskiApi.security
 
             if (encryptedBlob != null)
             {
-                string decryptedBlob = GetAesDecryptedString(encryptedBlob);
-                byte[] bytes = Convert.FromBase64String(decryptedBlob);
-                string json = ConvertFromBase64(bytes);
-                blob = JsonConvert.DeserializeObject<T>(json);
+                byte[] bytes = Convert.FromBase64String(encryptedBlob);
+                string decryptedBlob = GetAesDecryptedString(bytes);
+                blob = JsonConvert.DeserializeObject<T>(decryptedBlob);
             }
 
             return blob;
         }
 
-        private static string GetAesEcnryptedString(string base64)
+        private static byte[] GetAesEcnryptedBytes(string base64)
         {
             using (var aes = Aes.Create())
             {
                 var aesConfig = AesEncryption.Instance;
 
-                aes.Key = Encoding.ASCII.GetBytes(aesConfig.Key);
-                aes.IV = Encoding.ASCII.GetBytes(aesConfig.IV);
+                aes.Key = Convert.FromBase64String(aesConfig.Key);
+                aes.IV = Convert.FromBase64String(aesConfig.IV);
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -79,24 +80,25 @@ namespace paczkowskiApi.security
                 using (var streamWriter = new StreamWriter(cryptoStream))
                 {
                     streamWriter.Write(base64);
+                    streamWriter.Close();
                     var bytes = memoryStream.ToArray();
-                    return Encoding.ASCII.GetString(bytes);
+                    return bytes;
                 }
             }
         }
 
-        private static string GetAesDecryptedString(string encryptedBlob)
+        private static string GetAesDecryptedString(byte[] bytes)
         {
             using (var aes = Aes.Create())
             {
                 var aesConfig = AesEncryption.Instance;
 
-                aes.Key = Encoding.ASCII.GetBytes(aesConfig.Key);
-                aes.IV = Encoding.ASCII.GetBytes(aesConfig.IV);
+                aes.Key = Convert.FromBase64String(aesConfig.Key);
+                aes.IV = Convert.FromBase64String(aesConfig.IV);
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
-                using (var memoryStream = new MemoryStream())
+                using (var memoryStream = new MemoryStream(bytes))
                 using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                 using (var streamReader = new StreamReader(cryptoStream))
                 {
