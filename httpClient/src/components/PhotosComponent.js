@@ -155,7 +155,7 @@ export default {
         },
 
         editCategory(category, index) {
-            this.categoryModal.category = category;
+            this.categoryModal.category = category;            
             this.categoryModal.index = index;
             document.getElementById(this.modalId.category).style.display = 'block';
         },

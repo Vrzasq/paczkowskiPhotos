@@ -28,7 +28,7 @@ export default {
     },
     template: `
     <div :id="modalId" class="w3-modal">
-        <div class="w3-modal-content">
+        <div class="w3-modal-content w3-animate-top">
             <header class="w3-container w3-blue-grey">
                 <span @click="close" class="w3-button w3-display-topright">&times;</span>
                 <h2>{{ title }}</h2>
