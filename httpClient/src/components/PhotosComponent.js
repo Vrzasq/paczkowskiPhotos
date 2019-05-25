@@ -40,6 +40,7 @@ export default {
             <edit-category-modal
                 :categoryValue="categoryModal.category"
                 :index="categoryModal.index"
+                :modalId="modalId.category"
                 @update="updateCategoryView"
             ></edit-category-modal>
         </div>
@@ -54,6 +55,15 @@ export default {
                 @edit="editPhoto($event, index)"
                 @delete="deletePhoto($event, index)"
             ></photo-view-component>
+            <edit-photo-modal
+                :modalId="modalId.photo"
+                :imageId="photoModal.imageId"
+                :image="photoModal.image"
+                :imageNameValue="photoModal.imageName"
+                :categoryValue="photoModal.category"
+                :index="photoModal.index"
+                @update="updatePhotoView"
+            ></edit-photo-modal>
         </div>
         
     </div>
@@ -75,6 +85,17 @@ export default {
             categoryModal: {
                 category: '',
                 index: 0
+            },
+            photoModal: {
+                image: '',
+                category: '',
+                imageName: '',
+                imageId: '',
+                index: 0
+            },
+            modalId: {
+                category: 'categoryModal',
+                photo: 'photoModal'
             }
         }
     },
@@ -99,7 +120,18 @@ export default {
         },
 
         editPhoto(imageData, index) {
-            console.log(`${imageData} ${index}`);
+            console.log(imageData);
+            this.photoModal = imageData;
+            this.photoModal.index = index;
+            document.getElementById(this.modalId.photo).style.display = 'block';
+        },
+
+        updatePhotoView(data) {
+            console.log(data);
+            let photo = this.images[data.index];
+            photo.displayName = data.name;
+            if (photo.category != data.category)
+                this.$delete(this.images, index);
         },
 
         deleteCategory(category, index) {
@@ -125,7 +157,7 @@ export default {
         editCategory(category, index) {
             this.categoryModal.category = category;
             this.categoryModal.index = index;
-            document.getElementById('modal').style.display = 'block';
+            document.getElementById(this.modalId.category).style.display = 'block';
         },
 
         updateCategoryView(data) {

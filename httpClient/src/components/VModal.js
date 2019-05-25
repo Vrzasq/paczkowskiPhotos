@@ -20,10 +20,14 @@ export default {
                 return '';
             }
         },
+        modalId: {
+            type: String,
+            required: true
+        }
 
     },
     template: `
-    <div id="modal" class="w3-modal">
+    <div :id="modalId" class="w3-modal">
         <div class="w3-modal-content">
             <header class="w3-container w3-blue-grey">
                 <span @click="close" class="w3-button w3-display-topright">&times;</span>
@@ -34,11 +38,12 @@ export default {
                 <base-input v-for="dataInput in dataInputs"
                     v-bind="dataInput"
                     v-model="dataInput.value"
+                    :key="dataInput.label"
                 ></base-input>
             </div>
 
             <div class="img-preview" v-if="image !== ''">
-                <img :src="imageInfo.imageDataUrl" />
+                <img :src="image" />
             </div>
 
             <footer class="w3-container">
@@ -57,7 +62,7 @@ export default {
 
     methods: {
         close() {
-            document.getElementById('modal').style.display = 'none';
+            document.getElementById(this.modalId).style.display = 'none';
         },
 
         submit() {

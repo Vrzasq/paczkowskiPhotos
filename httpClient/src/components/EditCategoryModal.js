@@ -1,5 +1,5 @@
-import VModal from "./VModal.js";
-import Services from "../services.js";
+import VModal from './VModal.js';
+import Services from '../services.js';
 
 export default {
     components: {
@@ -13,12 +13,17 @@ export default {
         index: {
             type: Number,
             required: true
+        },
+        modalId: {
+            type: String,
+            required: true
         }
     },
     template: `
     <v-modal ref="vmodal"
         :title="modalTitle"
         :inputs="dataInputs"
+        :modalId="modalId"
         @submit="submit"
     ></v-modal>
     `,
@@ -75,9 +80,6 @@ export default {
         categoryValue(newValue) {
             this.dataInputs.category.value = newValue;
             this.oldCategory = newValue;
-        },
-        index(newValue) {
-
         }
     },
 

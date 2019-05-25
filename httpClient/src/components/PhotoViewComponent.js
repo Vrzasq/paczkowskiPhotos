@@ -21,7 +21,7 @@ export default {
     <div class="single-photo">
         <img v-img:title="imageName" :src="dataUrl" alt=":(" />
         <div>
-            <button class="w3-btn w3-blue-grey">{{ button.edit }}</button>
+            <button @click="edit" class="w3-btn w3-blue-grey">{{ button.edit }}</button>
             <button @click="$emit('delete', imageData)" class="w3-btn w3-blue-grey">{{ button.delete }}</button>
         </div>        
     </div>
@@ -32,7 +32,8 @@ export default {
             imageData: {
                 imageName: this.imageName,
                 category: this.category,
-                imageId: this.imageId
+                imageId: this.imageId,
+                image: ''
             },
             dataType: 'data:image/jpeg;base64',
             button: {
@@ -42,9 +43,22 @@ export default {
         }
     },
 
+    methods: {
+        edit() {
+            this.imageData.image = this.dataUrl;
+            this.$emit('edit', this.imageData);
+        }
+    },
+
     computed: {
         dataUrl() {
             return `${this.dataType},${this.image}`;
+        }
+    },
+
+    watch: {
+        imageName(newValue) {
+            this.imageData.imageName = newValue;
         }
     }
 }
