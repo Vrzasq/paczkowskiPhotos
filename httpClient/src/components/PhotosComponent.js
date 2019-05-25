@@ -1,9 +1,13 @@
 import Services from '../services.js';
 import PhotoViewComponent from './PhotoViewComponent.js';
+import EditCategoryModal from './EditCategoryModal.js';
+import EditPhotoModal from './EditPhotoModal.js';
 
 export default {
     components: {
-        PhotoViewComponent
+        PhotoViewComponent,
+        EditCategoryModal,
+        EditPhotoModal
     },
     props: {
         displayCategories: {
@@ -33,6 +37,9 @@ export default {
             <div v-if="categories.length === 0">
                 <h4>{{ text.noCategories }}</h4>
             </div>
+            <edit-category-modal
+                :categoryValue="categoryModal.category"
+            ></edit-category-modal>
         </div>
         <div class="photos-container">
             <h3 class="w3-blue-grey">{{ photosTitle }}</h3>
@@ -42,9 +49,11 @@ export default {
                 :imageId="image.photoNum"
                 :category="image.category"
                 :key="image.photoNum"
+                @edit="editPhoto($event, index)"
                 @delete="deletePhoto($event, index)"
             ></photo-view-component>
-        </div>        
+        </div>
+        
     </div>
     `,
 
@@ -60,7 +69,10 @@ export default {
                 noImages: 'NO IMAGES :('
             },
             images: [],
-            categories: []
+            categories: [],
+            categoryModal: {
+                category: ''
+            }
         }
     },
 
@@ -81,6 +93,10 @@ export default {
                 },
                 error: function (jqXHR, textStatus, errorThrown) { console.log(`${jqXHR} ${textStatus} ${errorThrown}`); }
             });
+        },
+
+        editPhoto(imageData, index) {
+            console.log(`${imageData} ${index}`);
         },
 
         deleteCategory(category, index) {
@@ -105,6 +121,8 @@ export default {
 
         editCategory(category, index) {
             alert(`${category} ${index}`)
+            this.categoryModal.category = category;
+            document.getElementById('modal').style.display = 'block';
         },
 
         showCategory(category) {
