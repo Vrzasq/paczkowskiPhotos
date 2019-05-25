@@ -127,7 +127,6 @@ namespace DbContract.Repository
         {
             var dbPhoto = dbContext.Photos.Single(p => p.PhotoNum == photo.PhotoNum && p.User.Id == photo.User.Id);
             dbContext.Remove(dbPhoto);
-            dbContext.Remove(dbPhoto);
             dbContext.SaveChanges();
         }
 
@@ -139,18 +138,18 @@ namespace DbContract.Repository
 
         public void DeleteCategory(User user, string category)
         {
-            IEnumerable<Photo> photos = dbContext.Photos.Include(p => p.User).Where(p => p.Category == category && p.User.Id == user.Id);
+            IEnumerable<Photo> photos = dbContext.Photos.Where(p => p.Category == category && p.User.Id == user.Id);
             dbContext.RemoveRange(photos);
             dbContext.SaveChanges();
         }
 
         public void EditCategory(User user, string oldCategory, string newCategory)
         {
-            bool alreadyExists = dbContext.Photos.Include(p => p.User).Where(p => p.Category == newCategory).Select(p => p.Category).Any();
+            bool alreadyExists = dbContext.Photos.Where(p => p.Category == newCategory && p.User.Id == user.Id).Select(p => p.Category).Any();
             if (alreadyExists)
                 throw new Exception($"Category [{newCategory}] already exists");
 
-            IEnumerable<Photo> photos = dbContext.Photos.Include(p => p.User).Where(p => p.Category == oldCategory && p.User.Id == user.Id).ToList();
+            IEnumerable<Photo> photos = dbContext.Photos.Where(p => p.Category == oldCategory && p.User.Id == user.Id);
             foreach (var photo in photos)
                 photo.Category = newCategory;
 
