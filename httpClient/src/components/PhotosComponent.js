@@ -39,6 +39,8 @@ export default {
             </div>
             <edit-category-modal
                 :categoryValue="categoryModal.category"
+                :index="categoryModal.index"
+                @update="updateCategoryView"
             ></edit-category-modal>
         </div>
         <div class="photos-container">
@@ -71,7 +73,8 @@ export default {
             images: [],
             categories: [],
             categoryModal: {
-                category: ''
+                category: '',
+                index: 0
             }
         }
     },
@@ -120,9 +123,13 @@ export default {
         },
 
         editCategory(category, index) {
-            alert(`${category} ${index}`)
             this.categoryModal.category = category;
+            this.categoryModal.index = index;
             document.getElementById('modal').style.display = 'block';
+        },
+
+        updateCategoryView(data) {
+            this.categories[data.index].name = data.category;
         },
 
         showCategory(category) {

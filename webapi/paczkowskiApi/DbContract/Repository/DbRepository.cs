@@ -143,5 +143,19 @@ namespace DbContract.Repository
             dbContext.RemoveRange(photos);
             dbContext.SaveChanges();
         }
+
+        public void EditCategory(User user, string oldCategory, string newCategory)
+        {
+            bool alreadyExists = dbContext.Photos.Include(p => p.User).Where(p => p.Category == newCategory).Select(p => p.Category).Any();
+            if (alreadyExists)
+                throw new Exception($"Category [{newCategory}] already exists");
+
+            IEnumerable<Photo> photos = dbContext.Photos.Include(p => p.User).Where(p => p.Category == oldCategory && p.User.Id == user.Id).ToList();
+            foreach (var photo in photos)
+                photo.Category = newCategory;
+
+            dbContext.UpdateRange(photos);
+            dbContext.SaveChanges();
+        }
     }
 }

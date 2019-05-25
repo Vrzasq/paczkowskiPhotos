@@ -137,6 +137,21 @@ namespace paczkowskiApi.Controllers
             }
         }
 
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = AuthScheme.Cookies)]
+        public ActionResult<string> EditCategory(EditCategoryModel model)
+        {
+            try
+            {
+                _repository.EditCategory(LoggedUser, model.OldCategory.Sanitize(), model.NewCategory.Sanitize());
+                return "SUCCESS";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         private Photo GetPhotoEntity(AddPhotoModel model)
         {
             return new Photo
