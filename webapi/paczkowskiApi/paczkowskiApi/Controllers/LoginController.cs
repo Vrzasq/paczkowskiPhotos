@@ -25,11 +25,11 @@ namespace paczkowskiApi.Controllers
         {
             var loginResult = new LoginResult();
             string userHash = CryptoPassword.GetPasswordHash(loginModel.Password);
-            string dbHash = _repository.GetPasswordHash(loginModel.Email);
+            User user = _repository.GetUserByEmail(loginModel.Email);
 
-            if (userHash == dbHash)
+            if (userHash == user?.Password)
             {
-                Authenticate(loginModel.Email);
+                Authenticate(user);
                 loginResult.Success = true;
             }
 
@@ -47,12 +47,12 @@ namespace paczkowskiApi.Controllers
                 });
         }
 
-        private void Authenticate(string email)
+        private void Authenticate(User user)
         {
             var cookies = Response.Cookies;
-            var authTokenBlob = new AuthTokenBlob(email, TokenProvider.NewAuthToken);
+            var authTokenBlob = new AuthTokenBlob(user.Email, TokenProvider.NewAuthToken);
             PutAuthUserToDb(authTokenBlob);
-            string encryptedBlob = TokenEncryption.Encrypt(authTokenBlob);
+            string encryptedBlob = DataEncryption.Encrypt(authTokenBlob);
             cookies.Append(CookieName.AuthToken, encryptedBlob, new CookieOptions { HttpOnly = true, Path = "/" });
         }
 
@@ -60,7 +60,7 @@ namespace paczkowskiApi.Controllers
         public ActionResult<bool> Logout()
         {
             var cookies = Request.Cookies;
-            AuthTokenBlob authTokenBlob = TokenEncryption.Decrypt(cookies[CookieName.AuthToken]);
+            AuthTokenBlob authTokenBlob = DataEncryption.Decrypt<AuthTokenBlob>(cookies[CookieName.AuthToken]);
             BurnOldToken(authTokenBlob.Email);
 
             return true;

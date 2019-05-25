@@ -25,7 +25,7 @@ namespace paczkowskiApi.security
             Task<AuthenticateResult> result = Task.FromResult(AuthenticateResult.NoResult());
 
             string authToken = cookies[CookieName.AuthToken];
-            AuthTokenBlob tokenBlob = TokenEncryption.Decrypt(authToken);
+            AuthTokenBlob tokenBlob = DataEncryption.Decrypt<AuthTokenBlob>(authToken);
 
             if (IsAuthorized(tokenBlob))
             {

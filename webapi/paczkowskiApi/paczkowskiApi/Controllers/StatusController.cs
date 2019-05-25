@@ -13,7 +13,7 @@ namespace paczkowskiApi.Controllers
     public class StatusController : ControllerBase
     {
         [HttpGet]
-        public ActionResult IsAlive()
+        public ActionResult IsAlive(string link)
         {
             return new JsonResult(
                 new

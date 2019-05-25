@@ -36,7 +36,8 @@ namespace paczkowskiApi
             {
                 options.DefaultAuthenticateScheme = AuthScheme.Cookies;
             }).AddScheme<AuthenticationSchemeOptions, AuthCookieHandler>(AuthScheme.Cookies, o => { });
-
+            services.AddOptions();
+            services.Configure<AesEncryption>(Configuration.GetSection("AesEncryption"));
             services.AddScoped<IRepository, DbRepository>();
             services.AddWebEncoders();
         }
