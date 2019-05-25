@@ -1,5 +1,6 @@
 import Services from '../services.js';
 import BaseForm from './VForm.js';
+import Commons from '../commons.js';
 
 export default {
     components: {
@@ -50,4 +51,8 @@ export default {
             });
         }
     },
+
+    mounted() {
+        Commons.logout();
+    }
 }

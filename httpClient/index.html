@@ -26,10 +26,10 @@
         <div class="content">
             <div class="w3-bar control-bar">
                 <div v-for="bar in controlBar" 
-                    v-bind:key="bar.name"
+                    :key="bar.name"
                     v-if="bar.display"
-                    v-bind:class="['control-bar-element', { active: currentBar.name === bar.name }]"
-                    v-on:click="currentBar = bar">
+                    :class="['control-bar-element', { active: currentBar.name === bar.name }]"
+                    @click="barClick(bar)">
                     {{ bar.name }}
                 </div>
             </div>
@@ -67,7 +67,15 @@
                 let bar = RoutesComponents[data.component];
                 bar.eventData = data.eventData;
                 this.currentBar = bar;
-            } 
+            },
+
+            barClick(bar) {
+                this.currentBar = bar;
+                if (bar.name === "LOGOUT") {
+                    Commons.logout();
+                    location.reload();
+                }
+            }
         }
 
         var vueApp = new Vue({

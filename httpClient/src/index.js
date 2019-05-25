@@ -28,6 +28,10 @@ let ControlBar = {
         display: true,
         component: LoginComponent,
         eventData: {}
+    },
+    logout: {
+        name: 'LOGOUT',
+        display: true,
     }
 }
 

@@ -19,6 +19,18 @@ let Commons = {
         });
 
         return isLoggedIn;
+    },
+
+    logout() {
+        $.ajax({
+            method: 'POST',
+            xhrFields: { withCredentials: true },
+            url: Services.login.logout,
+            success: function (data) {
+                console.log(`logout: ${data}`);
+            },
+            error: function (jqXHR, textStatus, errorThrown) { console.log(`${textStatus} ${errorThrown}`); }
+        });
     }
 }
 
