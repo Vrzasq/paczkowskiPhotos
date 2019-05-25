@@ -1,4 +1,4 @@
-let baseUrl = 'https://localhost:44374/api';
+let baseUrl = 'https://localhost:5001/api';
 
 export default {
     register: {
@@ -21,5 +21,6 @@ export default {
         deletePhoto: `${baseUrl}/photo/DeletePhoto`,
         getCategories: `${baseUrl}/photo/GetCategories`,
         deleteCategory: `${baseUrl}/photo/DeleteCategory`,
+        editCategory: `${baseUrl}/photo/EditCategory`,
     }
 }
