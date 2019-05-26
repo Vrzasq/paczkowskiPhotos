@@ -19,22 +19,59 @@
 </head>
 
 <body>
-    <div id="vueApp">
-        
+    <div id="shareApp">
+        <div class="photos-container">
+            <h2 class="w3-blue-grey">{{ title }}</h2>
+            <div class="single-photo shared-photo" v-for="image in images">
+                <span class="image-name">{{ image.displayName }}</span>
+                <img v-img:title="image.displayName" :src="getDataUrl(image.image)" alt=":(" />
+            </div>
+        </div>
     </div>
 
     <script type="module">
         import VueImg from './lib/v-img.js';
+        import Services from './src/services.js';
         
-        Vue.use(VueImg);
+        Vue.use(VueImg, vueImgConfig);
 
-        var vueData = {
-            indexHeader: 'Paczkowski Photos',
+        let vueData = {
+            title: 'SHARED PHOTOS',
+            images: [],
+            dataType: 'data:image/jpeg;base64'
         };
 
+        let vueMethods = {
+            getDataUrl(data) {
+                return `${this.dataType},${data}`;
+            }
+        }
+
+        let mounted = function() {
+            let vm = this;
+            $.ajax({
+                method: 'GET',
+                url: vm.requestUrl,
+                success: function (data) {
+                    if (data) {
+                        console.log(data);
+                        vm.images = data;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) { console.log(`${jqXHR} ${textStatus} ${errorThrown}`); }
+            });
+        }
+
         var vueApp = new Vue({
-            el: "#vueApp",
-            data: vueData
+            el: "#shareApp",
+            data: vueData,
+            methods: vueMethods,
+            mounted: mounted,
+            computed: {
+                requestUrl() {
+                    return `${Services.share.getSharedContent}${location.search}`;
+                }
+            }
         });
     </script>
 </body>

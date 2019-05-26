@@ -187,3 +187,16 @@ img {
 .data-error {
     border: 1px solid red !important;
 }
+
+.image-name {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 20px;
+}
+
+.shared-photo {
+    width: 180px;
+    height: 130px;
+}
