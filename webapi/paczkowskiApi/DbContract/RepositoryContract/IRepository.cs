@@ -23,5 +23,7 @@ namespace DbContract.RepositoryContract
         IEnumerable<string> GetCategories(User user);
         void DeleteCategory(User user, string category);
         void EditCategory(User user, string oldCategory, string newCategory);
+        Photo GetSharedPhoto(string email, string photoNum);
+        IEnumerable<Photo> GetSharedCategpry(string email, string category);
     }
 }

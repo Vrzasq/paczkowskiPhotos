@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Commons;
 using DbContract.Entities;
 using DbContract.RepositoryContract;
@@ -155,6 +154,24 @@ namespace DbContract.Repository
 
             dbContext.UpdateRange(photos);
             dbContext.SaveChanges();
+        }
+
+        public Photo GetSharedPhoto(string email, string photoNum)
+        {
+            Photo photo = dbContext.Photos.Where(p => p.User.Email == email && p.PhotoNum == photoNum).FirstOrDefault();
+            if (photo != null)
+                return photo;
+
+            throw new Exception("Image not found");
+        }
+
+        public IEnumerable<Photo> GetSharedCategpry(string email, string category)
+        {
+            IEnumerable<Photo> photos = dbContext.Photos.Where(p => p.User.Email == email && p.Category == category);
+            if (photos != null)
+                return photos;
+
+            throw new Exception("Category not found");
         }
     }
 }
