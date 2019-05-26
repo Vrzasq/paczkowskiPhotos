@@ -1,3 +1,5 @@
+import Services from '../services.js';
+
 export default {
     props: {
         image: {
@@ -23,6 +25,7 @@ export default {
         <div>
             <button @click="edit" class="w3-btn w3-blue-grey">{{ button.edit }}</button>
             <button @click="$emit('delete', imageData)" class="w3-btn w3-blue-grey">{{ button.delete }}</button>
+            <button @click="share" class="w3-btn w3-blue-grey">{{ button.share }}</button>
         </div>        
     </div>
     `,
@@ -37,9 +40,11 @@ export default {
             },
             dataType: 'data:image/jpeg;base64',
             button: {
-                edit: "Edit",
-                delete: "Delete"
-            }
+                edit: 'Edit',
+                delete: 'Delete',
+                share: 'Share'
+            },
+            sharedResource: ''
         }
     },
 
@@ -47,12 +52,35 @@ export default {
         edit() {
             this.imageData.image = this.dataUrl;
             this.$emit('edit', this.imageData);
+        },
+
+        share() {
+            let vm = this;
+            let request = {
+                photoNum: this.imageData.imageId
+            }
+            $.ajax({
+                method: 'POST',
+                contentType: 'application/json',
+                xhrFields: { withCredentials: true },
+                url: Services.share.getSharedImageLink,
+                data: JSON.stringify(request),
+                success: function (data) {
+                    vm.sharedResource = data;
+                    vm.$emit('share', vm.shareLink);
+                },
+                error: function (jqXHR, textStatus, errorThrown) { console.log(`${jqXHR} ${textStatus} ${errorThrown}`); }
+            });
         }
     },
 
     computed: {
         dataUrl() {
             return `${this.dataType},${this.image}`;
+        },
+
+        shareLink() {
+            return `${location.href}share?link=${this.sharedResource}`;
         }
     },
 

@@ -33,6 +33,7 @@ export default {
                 <img @click="showCategory(category.name)" src="images/folder.png" />
                 <button @click="editCategory(category.name, index)" class="w3-btn w3-blue-grey">{{ text.edit }}</button>
                 <button @click="deleteCategory(category.name, index)" class="w3-btn w3-blue-grey">{{ text.delete }}</button>
+                <button @click="shareCategory(category.name)" class="w3-btn w3-blue-grey">{{ text.share }}</button>
             </div>
             <div v-if="categories.length === 0">
                 <h4>{{ text.noCategories }}</h4>
@@ -54,6 +55,7 @@ export default {
                 :key="image.photoNum"
                 @edit="editPhoto($event, index)"
                 @delete="deletePhoto($event, index)"
+                @share="shareContent"
             ></photo-view-component>
             <edit-photo-modal
                 :modalId="modalId.photo"
@@ -65,7 +67,6 @@ export default {
                 @update="updatePhotoView"
             ></edit-photo-modal>
         </div>
-        
     </div>
     `,
 
@@ -77,6 +78,7 @@ export default {
                 unCategoriesTitle: 'NOT CATEGORIZED',
                 edit: 'Edit',
                 delete: 'Delete',
+                share: 'Share',
                 noCategories: 'NO CATEGORIES :(',
                 noImages: 'NO IMAGES :('
             },
@@ -134,6 +136,11 @@ export default {
                 this.$delete(this.images, index);
         },
 
+        shareContent(shareLink) {
+            console.log(shareLink);
+            alert(shareLink);
+        },
+
         deleteCategory(category, index) {
             let vm = this;
             $.ajax({
@@ -162,6 +169,25 @@ export default {
 
         updateCategoryView(data) {
             this.categories[data.index].name = data.category;
+        },
+
+        shareCategory(category) {
+            let vm = this;
+            let request = {
+                category: category
+            }
+            $.ajax({
+                method: 'POST',
+                contentType: 'application/json',
+                xhrFields: { withCredentials: true },
+                url: Services.share.getSharedCategoryLink,
+                data: JSON.stringify(request),
+                success: function (data) {
+                    let shareLink = `${location.href}share?link=${data}`;
+                    vm.shareContent(shareLink);
+                },
+                error: function (jqXHR, textStatus, errorThrown) { console.log(`${jqXHR} ${textStatus} ${errorThrown}`); }
+            });
         },
 
         showCategory(category) {
