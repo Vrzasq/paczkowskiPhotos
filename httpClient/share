@@ -21,7 +21,10 @@
 <body>
     <div id="shareApp">
         <div class="photos-container">
-            <h2 class="w3-blue-grey">{{ title }}</h2>
+            <h2 class="w3-blue-grey share-header">
+                {{ title }}
+                <img @click="goHome" class="home-icon" src="./images/home.png" alt="home.png" />
+            </h2>
             <div class="single-photo shared-photo" v-for="image in images">
                 <span class="image-name">{{ image.displayName }}</span>
                 <img v-img:title="image.displayName" :src="getDataUrl(image.image)" alt=":(" />
@@ -32,8 +35,8 @@
     <script type="module">
         import VueImg from './lib/v-img.js';
         import Services from './src/services.js';
-        
-        Vue.use(VueImg, vueImgConfig);
+
+        Vue.use(VueImg);
 
         let vueData = {
             title: 'SHARED PHOTOS',
@@ -44,6 +47,9 @@
         let vueMethods = {
             getDataUrl(data) {
                 return `${this.dataType},${data}`;
+            },
+            goHome() {
+                location.href = location.origin;
             }
         }
 
