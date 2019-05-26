@@ -25,10 +25,10 @@ namespace paczkowskiApi.Controllers
             _repository = repository;
         }
 
-        [HttpPost]
-        public ActionResult<IEnumerable<GetPhotosResult>> GetSharedContent(GetSharedContentModel model)
+        [HttpGet]
+        public ActionResult<IEnumerable<GetPhotosResult>> GetSharedContent(string link)
         {
-            ShareBlob blob = DataEncryption.Decrypt<ShareBlob>(model.Link);
+            ShareBlob blob = DataEncryption.Decrypt<ShareBlob>(link);
             var sharedPhotos = new List<GetPhotosResult>();
 
             if (blob.ShareMode == ShareMode.SingleImage)
@@ -60,7 +60,7 @@ namespace paczkowskiApi.Controllers
             };
 
             string encryptedBlob = DataEncryption.Encrypt(blob);
-            return encryptedBlob;
+            return encryptedBlob.ToUrl();
 
         }
 
@@ -76,7 +76,7 @@ namespace paczkowskiApi.Controllers
             };
 
             string encryptedBlob = DataEncryption.Encrypt(blob);
-            return encryptedBlob;
+            return encryptedBlob.ToUrl();
         }
     }
 }
