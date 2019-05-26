@@ -22,5 +22,11 @@ export default {
         getCategories: `${baseUrl}/photo/GetCategories`,
         deleteCategory: `${baseUrl}/photo/DeleteCategory`,
         editCategory: `${baseUrl}/photo/EditCategory`,
+    },
+
+    share: {
+        getSharedContent: `${baseUrl}/share/GetSharedContent`,
+        getSharedImageLink: `${baseUrl}/share/GetSharedImageLink`,
+        getSharedCategoryLink: `${baseUrl}/share/GetSharedCategoryLink`,
     }
 }
