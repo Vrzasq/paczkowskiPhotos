@@ -3,7 +3,6 @@ using System.Text;
 using Commons;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
-using DbContract.Entities;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 

@@ -1,6 +1,5 @@
 ﻿using DbContract.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
 namespace DbContract.WebApiDbContext
 {
