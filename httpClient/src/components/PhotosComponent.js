@@ -145,7 +145,7 @@ export default {
             let photo = this.images[data.index];
             photo.displayName = data.name;
             if (photo.category != data.category)
-                this.$delete(this.images, index);
+                this.$delete(this.images, data.index);
         },
 
         shareContent(shareLink) {
