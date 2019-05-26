@@ -2,12 +2,14 @@ import Services from '../services.js';
 import PhotoViewComponent from './PhotoViewComponent.js';
 import EditCategoryModal from './EditCategoryModal.js';
 import EditPhotoModal from './EditPhotoModal.js';
+import ShareModal from './ShareModal.js';
 
 export default {
     components: {
         PhotoViewComponent,
         EditCategoryModal,
-        EditPhotoModal
+        EditPhotoModal,
+        ShareModal
     },
     props: {
         displayCategories: {
@@ -67,6 +69,11 @@ export default {
                 @update="updatePhotoView"
             ></edit-photo-modal>
         </div>
+        <share-modal
+            :title="shareModal.title"
+            :modalId="shareModal.id"
+            :shareLink="shareModal.shareLink"
+        ></share-modal>
     </div>
     `,
 
@@ -98,6 +105,11 @@ export default {
             modalId: {
                 category: 'categoryModal',
                 photo: 'photoModal'
+            },
+            shareModal: {
+                id: 'shareModal',
+                title: 'LINK TO SHARE',
+                shareLink: ''
             }
         }
     },
@@ -138,7 +150,8 @@ export default {
 
         shareContent(shareLink) {
             console.log(shareLink);
-            alert(shareLink);
+            this.shareModal.shareLink = shareLink;
+            document.getElementById(this.shareModal.id).style.display = 'block';
         },
 
         deleteCategory(category, index) {
